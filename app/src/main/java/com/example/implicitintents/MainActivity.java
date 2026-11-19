@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,9 +30,11 @@ public class MainActivity extends AppCompatActivity {
         EditText websiteText = findViewById(R.id.editTextText);
         EditText locationText = findViewById(R.id.editTextText2);
         EditText sharetextText = findViewById(R.id.editTextText3);
+        EditText phoneText = findViewById(R.id.editTextPhone);
         Button websiteButton = findViewById(R.id.button);
         Button locationButton = findViewById(R.id.button4);
         Button shareTextButton = findViewById(R.id.button5);
+        Button callButton = findViewById(R.id.button6);
 
         websiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call(phoneText.getText().toString());
+            }
+        });
+
 
     }
 
@@ -70,6 +80,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void shareText(String text){
+        new ShareCompat.IntentBuilder(this)
+                .setType("text/plain")
+                .setText(text)
+                .startChooser();
+    }
 
+    public void call(String phoneNumber){
+        Uri uri = Uri.parse("tel:"+phoneNumber);
+        Intent it = new Intent(Intent.ACTION_DIAL, uri);
+        startActivity(it);
     }
 }
